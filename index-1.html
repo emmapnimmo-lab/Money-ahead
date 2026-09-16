@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#9d7be5"><title>Money Ahead</title>
+<style>
+:root{--bg:#f6f0ff;--card:#fffaff;--ink:#29243a;--muted:#756d86;--accent:#9d7be5;--soft:#eadfff;--good:#68a77a;--warn:#d99352;--danger:#d96b79;--shadow:0 10px 30px rgba(83,58,125,.10)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.app{max-width:520px;margin:auto;min-height:100vh;padding-bottom:90px}
+header{padding:20px 18px 8px;display:flex;justify-content:space-between;align-items:center}.brand{font-size:22px;font-weight:850}.tag{font-size:12px;color:var(--muted)}button{font:inherit;border:0;cursor:pointer}.gear{width:42px;height:42px;border-radius:14px;background:var(--card);box-shadow:var(--shadow)}
+main{padding:5px 16px}.view{display:none}.view.active{display:block}.hello{padding:15px 3px 8px}.hello h1{margin:0 0 5px;font-size:27px}.hello p{margin:0;color:var(--muted)}
+.card{background:var(--card);border-radius:22px;padding:17px;box-shadow:var(--shadow);margin:12px 0}.hero{background:linear-gradient(135deg,#fffaff,#eee4ff)}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.big{font-size:34px;font-weight:900}.muted,small{color:var(--muted)}.pill{display:inline-block;border-radius:999px;padding:6px 10px;background:#efe5ff;color:#7654b8;font-size:12px;font-weight:750}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.metric{background:var(--card);border-radius:20px;padding:15px;box-shadow:var(--shadow)}.metric b{font-size:21px;display:block}.metric small{font-size:12px}.section{font-size:18px;margin:21px 4px 7px}
+.goal{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid #eee7f7}.goal:last-child{border-bottom:0}.emoji{width:43px;height:43px;border-radius:14px;background:#f0e7ff;display:grid;place-items:center;font-size:21px}.goalmain{flex:1}.goalmain b{display:block}.progress{height:8px;background:#eadfff;border-radius:20px;overflow:hidden;margin:9px 0 4px}.progress i{display:block;height:100%;background:var(--accent);border-radius:20px}.amount{text-align:right;font-weight:800;font-size:13px}
+.move{border:2px solid #dfd0fa;background:linear-gradient(135deg,#fffaff,#f2eaff)}.action{width:100%;padding:13px 16px;border-radius:15px;background:var(--accent);color:#fff;font-weight:800}.secondary{background:#eee4ff;color:#7654b8}.danger{background:#fde5ea;color:#b43d52}.tiny{font-size:12px}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);padding:9px 10px calc(9px + env(safe-area-inset-bottom));background:rgba(255,250,255,.95);backdrop-filter:blur(14px);display:grid;grid-template-columns:repeat(5,1fr);box-shadow:0 -8px 25px rgba(83,58,125,.10);z-index:5}nav button{background:none;color:var(--muted);font-size:11px}nav span{display:block;font-size:20px;margin-bottom:1px}nav .active{color:#7b58bd;font-weight:850}
+.fab{position:fixed;right:max(18px,calc(50% - 240px));bottom:88px;width:56px;height:56px;border-radius:18px;background:var(--accent);color:white;font-size:27px;box-shadow:0 12px 28px rgba(119,79,180,.28);z-index:4}
+.modal{position:fixed;inset:0;background:rgba(40,30,55,.35);display:none;align-items:flex-end;z-index:10}.modal.open{display:flex}.sheet{background:var(--card);width:100%;max-width:520px;margin:auto 0 0;border-radius:28px 28px 0 0;padding:20px 18px calc(24px + env(safe-area-inset-bottom));max-height:90vh;overflow:auto}.sheet h2{margin:0 0 15px}.close{float:right;width:38px;height:38px;border-radius:12px;background:#f0e7ff}label{display:block;color:var(--muted);font-size:13px;margin:11px 0 5px}input,select{width:100%;padding:13px;border:1px solid #e3d8f1;border-radius:14px;background:white;font-size:16px;color:var(--ink)}.choice{padding:12px;border-radius:14px;background:#f3ebff;margin:8px 0}.member{display:flex;align-items:center;gap:10px;padding:10px 0}.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#e5d7ff}.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:165px;background:#302a3d;color:#fff;padding:11px 15px;border-radius:14px;display:none;z-index:20;font-size:13px}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div><div class="brand">💜 Money Ahead</div><div class="tag">Know what's coming. Save for it.</div></div><button class="gear" onclick="personalise()">⚙️</button></header>
+<main>
+<section id="home" class="view active">
+<div class="hello"><h1>Good morning 👋</h1><p>Your household is getting ahead.</p></div>
+<div class="card hero"><div class="row"><div><small>Household future fund</small><div class="big" id="total">£0</div><span class="pill" id="funded">0% funded</span></div><div style="font-size:52px">🌷</div></div></div>
+<div class="grid"><div class="metric"><b id="monthly">£843</b><small>Monthly plan</small></div><div class="metric"><b id="move">£0</b><small>Available to move</small></div><div class="metric"><b id="next">£0</b><small>Next expense</small></div><div class="metric"><b id="goals">0</b><small>Goals ready</small></div></div>
+<h2 class="section">✨ Available to Move</h2>
+<div class="card move"><div class="row"><div><b id="moveText">Checking your pots…</b><p class="muted tiny">Money Ahead spots money sitting ahead of plan.</p></div><button class="pill" onclick="moveMoney()">Review</button></div></div>
+<h2 class="section">Coming up</h2><div class="card" id="homeGoals"></div>
+</section>
+
+<section id="pots" class="view"><div class="hello"><h1>Our pots 💜</h1><p>One plan, shared by your household.</p></div><div class="card"><div class="row"><div><b>Monthly contribution</b><div class="big" style="font-size:26px">£843</div></div><button class="pill" onclick="deposit()">Add money</button></div><p class="muted tiny">Each deposit is automatically shared across your planned expenses.</p></div><div class="card" id="allGoals"></div></section>
+
+<section id="forecast" class="view"><div class="hello"><h1>Forecast 📅</h1><p>See the months that need attention before they arrive.</p></div><div class="card"><b>December needs a little help</b><p class="muted">Christmas and other annual costs make this your busiest month.</p><div id="bars" style="height:150px;display:flex;align-items:end;gap:7px;padding-top:20px"></div></div><div class="card"><div class="row"><b>September</b><b style="color:var(--danger)">£340 short</b></div><hr><div class="row"><b>December</b><b style="color:var(--danger)">£1,090 short</b></div></div><div class="card"><b>🪄 What if you saved £950/month?</b><p class="muted">December would move from £1,090 short to roughly £110 ahead.</p><button class="action" onclick="whatif()">Try another amount</button></div></section>
+
+<section id="more" class="view"><div class="hello"><h1>Our Money Ahead</h1><p>Make it yours.</p></div><div class="card"><b>👩‍❤️‍👨 Household</b><div class="member"><div class="avatar">👩</div><div><b>You</b><small>Owner</small></div></div><div class="member"><div class="avatar">👨</div><div><b>Husband</b><small>Shared access</small></div></div><button class="action secondary" onclick="invite()">Invite another person</button></div><div class="card"><div class="row"><div><b>🎨 Personalise</b><p class="muted">Colours and your dashboard.</p></div><button class="pill" onclick="personalise()">Customise</button></div></div></section>
+</main>
+<button class="fab" onclick="addExpense()">＋</button>
+<nav><button class="active" onclick="tab('home',this)"><span>⌂</span>Home</button><button onclick="tab('pots',this)"><span>◉</span>Pots</button><button onclick="addExpense()"><span>＋</span>Add</button><button onclick="tab('forecast',this)"><span>⌁</span>Forecast</button><button onclick="tab('more',this)"><span>•••</span>More</button></nav>
+</div><div class="toast" id="toast"></div><div class="modal" id="modal"><div class="sheet"><button class="close" onclick="closeModal()">×</button><h2 id="title"></h2><div id="body"></div></div></div>
+<script>
+const base=[
+["House maintenance","🏠",600,240,"Nov 2026","Important"],
+["House insurance","🏡",280,180,"Mar 2027","Essential"],
+["Car insurance","🚗",600,405,"Feb 2027","Essential"],
+["House reno","🧰",1200,420,"Jun 2027","Optional"],
+["Car maintenance","🛠️",500,320,"Apr 2027","Important"],
+["Clothes","👕",600,260,"Dec 2026","Important"],
+["Hollie & Jake bills to Deb","👨‍👩‍👧‍👦",900,330,"Monthly","Essential"],
+["Hair & Beauty","💇",480,300,"Dec 2026","Optional"],
+["Entertainment (adult)","🍿",480,260,"Monthly","Optional"],
+["Entertainment (kids)","🎟️",360,180,"Monthly","Optional"],
+["Gifts Family","🎁",500,250,"Dec 2026","Important"],
+["Gifts Friends","🎀",250,110,"Dec 2026","Optional"],
+["School Dinners","🍎",600,260,"Monthly","Essential"],
+["Uniform","🎒",250,120,"Aug 2027","Essential"],
+["School Outings","🚌",300,130,"Jun 2027","Important"],
+["Optician","👓",160,80,"May 2027","Essential"],
+["Dentist","🦷",200,90,"Jun 2027","Essential"],
+["Childcare (holidays)","☀️",800,260,"Aug 2027","Essential"],
+["Pet care","🐾",300,140,"Oct 2026","Essential"],
+["Contingency","🪴",600,210,"Any time","Essential"],
+["Holiday","✈️",1500,420,"Aug 2027","Optional"]
+];
+let goals=JSON.parse(localStorage.getItem("ma_v2_goals")||"null")||base.map(x=>({name:x[0],icon:x[1],target:x[2],saved:x[3],due:x[4],priority:x[5]}));
+let theme=JSON.parse(localStorage.getItem("ma_v2_theme")||"null")||{bg:"#f6f0ff",accent:"#9d7be5"};
+goals.forEach(g=>g.history=g.history||[]); const $=s=>document.querySelector(s), money=n=>"£"+Math.round(n).toLocaleString("en-GB");
+function render(){
+let total=goals.reduce((a,g)=>a+g.saved,0),fund=goals.reduce((a,g)=>a+Math.min(1,g.saved/g.target),0)/goals.length*100;
+let spare=goals.reduce((a,g)=>a+Math.max(0,g.saved-g.target*.9),0)*.25;
+$("#total").textContent=money(total);$("#funded").textContent=Math.round(fund)+"% funded";$("#move").textContent=money(spare);
+$("#next").textContent=money(Math.min(...goals.map(g=>Math.max(0,g.target-g.saved))));$("#goals").textContent=goals.filter(g=>g.saved>=g.target).length;
+$("#moveText").textContent=spare>0?money(spare)+" could be moved":"Nothing needs moving yet";
+const sorted=[...goals].sort((a,b)=>(a.saved/a.target)-(b.saved/b.target));
+const make=g=>`<div class="goal"><div class="emoji">${g.icon}</div><div class="goalmain"><b>${g.name}</b><small>${money(g.saved)} of ${money(g.target)} · ${g.due}</small><div class="progress"><i style="width:${Math.min(100,g.saved/g.target*100)}%"></i></div><small>${g.priority}</small></div><div class="amount">${Math.round(g.saved/g.target*100)}%<br><button class="pill" onclick="spendOn(${goals.indexOf(g)})" style="margin-top:6px">Spend</button><br><button class="pill danger" onclick="removePot(${goals.indexOf(g)})" style="margin-top:6px">Remove</button></div></div>`;
+$("#homeGoals").innerHTML=sorted.slice(0,5).map(g=>make(g,goals.indexOf(g))).join("");$("#allGoals").innerHTML=goals.map((g,i)=>make(g,i)).join("");
+$("#bars").innerHTML=[72,84,62,76,55,88,64,48,80,68,58,92].map(h=>`<div style="flex:1;height:${h}%;background:var(--soft);border-radius:8px 8px 2px 2px"></div>`).join("");
+document.body.style.setProperty("--bg",theme.bg);document.body.style.setProperty("--accent",theme.accent);
+}
+function tab(id,b){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$("#"+id).classList.add("active");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active")}
+function modal(t,b){$("#title").textContent=t;$("#body").innerHTML=b;$("#modal").classList.add("open")}function closeModal(){$("#modal").classList.remove("open")}
+
+function removePot(i){
+  const g=goals[i];
+  if(!g)return;
+  const others=goals.filter((_,n)=>n!==i);
+  if(!others.length){modal("Remove "+g.name,`<p class="muted">This is your only pot. Please spend or move its ${money(g.saved)} first, then remove it.</p><button class="action" onclick="closeModal()">Done</button>`);return;}
+  modal("Remove "+g.name,`<p>Remove <b>${g.name}</b> from your plan?</p><div class="choice">${g.saved>0?`Its remaining ${money(g.saved)} will be redistributed across your other pots in proportion to their targets.`:"This pot has no remaining balance."}</div><button class="action danger" onclick="confirmRemovePot(${i})">Remove pot${g.saved>0?" and redistribute":""}</button>`);
+}
+function confirmRemovePot(i){
+  const g=goals[i], others=goals.filter((_,n)=>n!==i), balance=Number(g.saved)||0;
+  const total=others.reduce((a,x)=>a+Number(x.target||0),0);
+  others.forEach(o=>{const share=total>0?balance*Number(o.target||0)/total:balance/others.length;o.saved+=share;o.history=o.history||[];if(share>0)o.history.unshift({type:"transfer in",amount:share,reason:"Redistributed from removed "+g.name,date:new Date().toLocaleDateString("en-GB")});});
+  goals.splice(i,1);localStorage.setItem("ma_v2_goals",JSON.stringify(goals));closeModal();render();toast(g.name+" removed"+(balance>0?" and funds redistributed ✨":" 💜"));
+}
+function spendOn(i){
+  const g=goals[i];
+  modal("Spend from "+g.name,`<div class="choice"><b>${g.icon} ${g.name}</b><br><small>Current balance: ${money(g.saved)} · Target: ${money(g.target)}</small></div>
+  <label>How much did you spend?</label><input id="sp" type="number" min="0" max="${g.saved}" placeholder="0">
+  <label>What was it for?</label><input id="reason" placeholder="e.g. Insurance payment">
+  <br><br><button class="action" onclick="recordSpend(${i})">Record spend</button>`);
+}
+function recordSpend(i){
+  const v=+$("#sp").value||0, g=goals[i];
+  if(v<=0){toast("Enter an amount");return}
+  if(v>g.saved){toast("That is more than this pot has available");return}
+  g.saved-=v;
+  g.history=g.history||[];
+  g.history.unshift({type:"spend",amount:v,reason:$("#reason").value||"Spending",date:new Date().toLocaleDateString("en-GB")});
+  localStorage.setItem("ma_v2_goals",JSON.stringify(goals));
+  closeModal();render();toast(money(v)+" spent from "+g.name+" 💜");
+}
+function showHistory(i){
+  const g=goals[i], h=g.history||[];
+  modal(g.icon+" "+g.name,`<div class="choice"><b>Current balance: ${money(g.saved)}</b><br><small>Target: ${money(g.target)}</small></div>
+  <h3>Activity</h3>${h.length?h.map(x=>`<div class="choice"><b>${x.type==="spend"?"−":"+"}${money(x.amount)}</b> · ${x.reason}<br><small>${x.date}</small></div>`).join(""):"<p class='muted'>No activity recorded yet.</p>"}
+  <button class="action" onclick="spendOn(${i})">Spend from this pot</button>`);
+}
+
+function addExpense(){modal("Add a future expense",`<label>Name</label><input id="n" placeholder="e.g. Car insurance"><label>Target amount</label><input id="t" type="number" placeholder="600"><label>Already saved</label><input id="s" type="number" placeholder="0"><label>Due</label><input id="d" placeholder="e.g. February 2027"><label>Priority</label><select id="p"><option>Essential</option><option>Important</option><option>Optional</option></select><br><br><button class="action" onclick="saveGoal()">Add to our plan</button>`)}
+function saveGoal(){goals.unshift({name:$("#n").value||"New expense",icon:"💜",target:+$("#t").value||0,saved:+$("#s").value||0,due:$("#d").value||"—",priority:$("#p").value,history:[]});localStorage.setItem("ma_v2_goals",JSON.stringify(goals));closeModal();render();toast("Added to your household plan 💜")}
+function deposit(){modal("Add money",`<p class="muted">Money Ahead will distribute the deposit proportionally across your planned pots.</p><label>Amount</label><input id="dep" type="number" value="850"><br><br><button class="action" onclick="allocate()">Allocate £ to our pots</button>`)}
+function allocate(){let v=+$("#dep").value||0,total=goals.reduce((a,g)=>a+g.target,0);goals.forEach(g=>{let add=v*g.target/total;g.saved+=add;g.history=g.history||[];g.history.unshift({type:"deposit",amount:add,reason:"Monthly allocation",date:new Date().toLocaleDateString("en-GB")});});localStorage.setItem("ma_v2_goals",JSON.stringify(goals));closeModal();render();toast("Deposit allocated across your pots ✨")}
+function openMove(){let over=goals.filter(g=>g.saved>g.target*.9).slice(0,4),under=goals.filter(g=>g.saved<g.target*.65).slice(0,4);modal("Available to Move",`<p class="muted">Money Ahead has spotted places where money is ahead of plan and places that need a boost.</p><h3>Money ahead</h3>${over.map(g=>`<div class="choice"><b>${g.icon} ${g.name}</b><br><small>${money(Math.max(0,g.saved-g.target))} above target</small></div>`).join("")||"<p class='muted'>No spare pots yet.</p>"}<h3>Could use a boost</h3>${under.map(g=>`<div class="choice"><b>${g.icon} ${g.name}</b><br><small>${money(g.target-g.saved)} still needed</small></div>`).join("")}<button class="action" onclick="toast('Transfer flow ready for the next build 💜');closeModal()">Done</button>`)}
+
+function moveMoney(){
+  const sources=goals.map((g,i)=>({i,g,spare:Math.max(0,g.saved-g.target)})).filter(x=>x.spare>0.01);
+  const targets=goals.map((g,i)=>({i,g,need:Math.max(0,g.target-g.saved)})).filter(x=>x.need>0.01);
+  if(!sources.length){
+    modal("Available to Move",`<p class="muted">None of your pots currently have money above their target.</p><button class="action" onclick="closeModal()">Done</button>`);
+    return;
+  }
+  modal("Move money",`
+    <p class="muted">Move money from a pot that is ahead to one that needs a boost.</p>
+    <label>Move from</label>
+    <select id="moveFrom">${sources.map(x=>`<option value="${x.i}">${x.g.icon} ${x.g.name} — ${money(x.spare)} spare</option>`).join("")}</select>
+    <label>Move to</label>
+    <select id="moveTo">${targets.length?targets.map(x=>`<option value="${x.i}">${x.g.icon} ${x.g.name} — ${money(x.need)} needed</option>`).join(""):`<option value="-1">No pot needs a boost</option>`}</select>
+    <label>Amount</label>
+    <input id="moveAmount" type="number" min="0" placeholder="e.g. 100">
+    <div class="choice" id="movePreview">Enter an amount to preview the new balances.</div>
+    <button class="action" onclick="confirmMove()">Move money</button>
+  `);
+  document.getElementById("moveAmount").addEventListener("input",updateMovePreview);
+  document.getElementById("moveFrom").addEventListener("change",updateMovePreview);
+  document.getElementById("moveTo").addEventListener("change",updateMovePreview);
+}
+function updateMovePreview(){
+  const fi=Number(document.getElementById("moveFrom").value),ti=Number(document.getElementById("moveTo").value),v=Number(document.getElementById("moveAmount").value)||0;
+  if(ti<0)return;
+  const f=goals[fi],t=goals[ti];
+  document.getElementById("movePreview").innerHTML=`<b>${f.icon} ${f.name}</b>: ${money(Math.max(0,f.saved-v))}<br><b>${t.icon} ${t.name}</b>: ${money(t.saved+v)}`;
+}
+function confirmMove(){
+  const fi=Number(document.getElementById("moveFrom").value),ti=Number(document.getElementById("moveTo").value),v=Number(document.getElementById("moveAmount").value)||0;
+  if(fi===ti){toast("Choose two different pots");return}
+  if(ti<0){toast("There isn't a pot needing a boost");return}
+  const from=goals[fi],to=goals[ti];
+  if(v<=0){toast("Enter an amount");return}
+  if(v>from.saved){toast("That pot doesn't have enough money");return}
+  from.saved-=v;to.saved+=v;
+  const date=new Date().toLocaleDateString("en-GB");
+  from.history=from.history||[];to.history=to.history||[];
+  from.history.unshift({type:"transfer out",amount:v,reason:"Moved to "+to.name,date});
+  to.history.unshift({type:"transfer in",amount:v,reason:"Moved from "+from.name,date});
+  localStorage.setItem("ma_v2_goals",JSON.stringify(goals));
+  closeModal();render();toast(`${money(v)} moved from ${from.name} to ${to.name} ✨`);
+}
+
+function invite(){modal("Share your household",`<p class="muted">In the full app, this is where you'll invite your husband so both phones share the same pots and balances.</p><div class="choice">💜 <b>Household sharing</b><br><small>One account · two phones · one plan</small></div><button class="action" onclick="toast('Invite feature is mapped out for the shared build');closeModal()">Got it</button>`)}
+function whatif(){modal("What if?",`<p class="muted">Change the monthly amount and see how quickly your future expenses become funded.</p><label>Monthly contribution</label><input id="wi" type="number" value="950" oninput="calcWhatIf()"><div id="wir" class="choice"><b>At £950/month</b><br><small>December is roughly £110 ahead.</small></div><button class="action" onclick="closeModal()">Keep exploring</button>`)}
+function calcWhatIf(){let v=+$("#wi").value||0;let diff=v-843;$("#wir").innerHTML=`<b>At ${money(v)}/month</b><br><small>${diff>=0?"That's "+money(diff)+" more each month than your current plan.":"That's "+money(-diff)+" less each month than your current plan."}</small>`}
+function personalise(){modal("Make Money Ahead yours",`<h3>Background</h3><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px">${[["#f6f0ff","Lavender"],["#fff0f6","Pink"],["#edf5ee","Sage"],["#eaf4ff","Sky"],["#fff1e8","Peach"],["#fff8df","Butter"]].map(a=>`<button style="height:58px;border-radius:15px;border:3px solid ${theme.bg==a[0]?"#7654b8":"transparent"};background:${a[0]}" onclick="setBg('${a[0]}')">${a[1]}</button>`).join("")}</div><h3>Accent</h3><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">${["#9d7be5","#75a982","#75a9d8","#e39ab4","#e6ad65"].map(c=>`<button style="height:45px;border-radius:13px;background:${c}" onclick="setAccent('${c}')"></button>`).join("")}</div>`)}
+function setBg(c){theme.bg=c;localStorage.setItem("ma_v2_theme",JSON.stringify(theme));render();personalise()}function setAccent(c){theme.accent=c;localStorage.setItem("ma_v2_theme",JSON.stringify(theme));render();personalise()}
+function toast(t){$("#toast").textContent=t;$("#toast").style.display="block";setTimeout(()=>$("#toast").style.display="none",2200)}
+render();
+</script>
+</body></html>
